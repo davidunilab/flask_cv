@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %} About me {% endblock %}
+{% block content %} 
+        <div class="row">
+          <div class="col-3 card">
+            <img src="{{url_for('static', filename='images/image001.jpeg')}}" alt="image">
+            <a href="#">Github</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Gmail</a>
+            <a href="#">+995555555</a>
+
+          </div>
+          <div class="col card">
+            <div>
+                <h1> John Doe </h1>
+                <p>Back End Devepoer (Python)</p>
+            </div>
+
+
+            <div>
+              <h2> Education </h2>
+              {% for edu in education %} 
+              <p>{{ edu.start}}-{{ edu.finish}} - {{ edu.curse }}</p>
+              {% endfor %}
+          </div>
+
+
+            <div>
+                <h2> Wrok </h2>
+                {% for work in working %} 
+                <p>{{ work.start}}-{{ work.finish}} - {{ work.position }}</p>
+                {% endfor %}
+            </div>
+
+        </div>
+{% endblock %}
