@@ -1,7 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from wtforms.validators import DataRequired
+
 from data.database import edu, working
 from flask_sqlalchemy import SQLAlchemy
-
+from wtforms import Form, TextAreaField, IntegerField, StringField
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cv.db'
@@ -30,6 +32,14 @@ class Edu (db.Model):
 
     def __repr__(self):
         return '<Edu %r>' % self.curse
+
+
+class EduForm (Form):
+    start = IntegerField("კურსის დაწყება", validators=[DataRequired("ველი სავალდებულოა")])
+    finish = IntegerField("კურსის დამთავრება", validators=[DataRequired()])
+    curse = StringField("კურსის სახელი", validators=[DataRequired()])
+    description = TextAreaField("კურსის აღწერა")
+
 
 
 @app.route("/")
@@ -68,9 +78,22 @@ def work_delete(id):
     db.session.commit()
     return "მონაცემი წარმატებით წაიშალა"
 
-@app.route("/gallery")
+@app.route("/gallery", methods = ["GET","POST"])
 def gallery():
-    return render_template("gallery.html")
+    form = EduForm()
+
+    if request.method == 'POST' and form.validate():
+        start = request.form["start"]
+        finish = request.form["finish"]
+        curse = request.form["curse"]
+        description = request.form["description"]
+
+        edu = Edu(start=start, finish=finish, curse=curse, description=description)
+        db.session.add(edu)
+        db.session.commit()
+
+    edu = Edu.query.all()
+    return render_template("gallery.html", edu=edu, form=form)
 
 
 if __name__ == "__main__":

@@ -5,4 +5,28 @@
 
 <h1>This is content page</h1>
 
+{%  for ed in edu %}
+<h2>
+    {{ ed.curse }} - start:{{ ed.start }}, finish:{{ ed.finish }}
+</h2>
+{% endfor %}
+
+
+    <form action="" method="post">
+        {{ form.start.name }}
+        {{ form.start }}
+
+        {{ form.finish.name }}
+        {{ form.finish }}
+
+        {{ form.curse.name }}
+        {{ form.curse }}
+
+        {{ form.description.name }}
+        {{ form.description }}
+
+        <input type="submit" value="send">
+    </form>
+
+
 {% endblock %}
