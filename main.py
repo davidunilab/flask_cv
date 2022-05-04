@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from wtforms import Form, TextAreaField, IntegerField, StringField
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cv.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cv.db?check_same_thread=False'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -92,7 +92,7 @@ def gallery():
         db.session.add(edu)
         db.session.commit()
 
-    edu = Edu.query.all()
+    edu = Edu.query.filter(Edu.start > 2005).all()
     return render_template("gallery.html", edu=edu, form=form)
 
 
